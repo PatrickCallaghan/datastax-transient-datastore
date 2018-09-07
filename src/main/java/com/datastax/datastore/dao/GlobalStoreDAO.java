@@ -1,4 +1,4 @@
-package com.datastax.global.dao;
+package com.datastax.datastore.dao;
 
 import java.io.IOException;
 import java.text.DateFormat;

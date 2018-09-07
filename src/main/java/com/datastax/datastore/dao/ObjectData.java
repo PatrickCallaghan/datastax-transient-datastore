@@ -1,4 +1,4 @@
-package com.datastax.global.dao;
+package com.datastax.datastore.dao;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

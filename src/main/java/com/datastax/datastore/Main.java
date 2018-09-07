@@ -9,8 +9,8 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.datastax.datastore.dao.ObjectData;
 import com.datastax.demo.utils.PropertyHelper;
-import com.datastax.global.dao.ObjectData;
 
 public class Main {
 

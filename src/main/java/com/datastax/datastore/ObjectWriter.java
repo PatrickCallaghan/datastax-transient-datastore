@@ -2,7 +2,7 @@ package com.datastax.datastore;
 
 import java.util.concurrent.BlockingQueue;
 
-import com.datastax.global.dao.ObjectData;
+import com.datastax.datastore.dao.ObjectData;
 
 class ObjectWriter implements Runnable {
 
