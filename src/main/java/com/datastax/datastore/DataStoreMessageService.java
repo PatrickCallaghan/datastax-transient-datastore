@@ -37,4 +37,17 @@ public class DataStoreMessageService {
 			return null;
 		}
 	}
+
+	public void deleteData(MessageObject data) {
+		try {			
+			dao.delete(data);
+			if (deleteCounter.incrementAndGet() % 10000 == 0){
+				logger.info("Deleted " + deleteCounter.get() + " transactions"); 
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		
+	}
 }

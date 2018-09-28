@@ -25,7 +25,7 @@ class MessageReader implements Runnable {
 			
 			if (data != null){
 				service.getMessage(data);				
-				//service.deleteData(key);
+				service.deleteData(data);
 			}				
 		}
 	}

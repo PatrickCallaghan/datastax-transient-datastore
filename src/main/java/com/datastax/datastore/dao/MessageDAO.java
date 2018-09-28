@@ -52,4 +52,9 @@ public class MessageDAO {
 		
 		mapper.save(value);
 	}
+
+	public void delete(MessageObject data) {
+		
+		mapper.delete(data);
+	}
 }
