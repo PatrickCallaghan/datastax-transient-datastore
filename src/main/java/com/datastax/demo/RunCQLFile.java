@@ -1,12 +1,12 @@
 package com.datastax.demo;
 
+import org.apache.kafka.common.Cluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.datastax.demo.utils.FileUtils;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Session;
-import com.datastax.driver.core.exceptions.InvalidQueryException;
+import com.datastax.dse.driver.api.core.DseSession;
+import com.datastax.oss.driver.api.core.servererrors.InvalidQueryException;
 
 public abstract class RunCQLFile {
 
@@ -15,7 +15,7 @@ public abstract class RunCQLFile {
 	static String DROP_KEYSPACE;
 
 	private Cluster cluster;
-	private Session session;
+	private DseSession  session;
 	private String CQL_FILE;
 
 	RunCQLFile(String cqlFile) {
@@ -23,13 +23,11 @@ public abstract class RunCQLFile {
 		logger.info("Running file " + cqlFile);
 		this.CQL_FILE = cqlFile;
 		
-		String contactPointsStr = System.getProperty("contactPoints");
-		if (contactPointsStr == null) {
-			contactPointsStr = "127.0.0.1";
-		}
-
-		cluster = Cluster.builder().addContactPoints(contactPointsStr.split(",")).build();
-		session = cluster.connect();
+		session = DseSession.builder().withCloudSecureConnectBundle("/Users/patrickcallaghan/secure-connect-testing.zip")
+		           .withAuthCredentials("Patrick","Walrus2005")
+		           .withKeyspace("testing")
+		           .build();
+		
 	}
 	
 	void internalSetup() {
@@ -80,6 +78,6 @@ public abstract class RunCQLFile {
 	
 	void shutdown() {
 		session.close();
-		cluster.close();
+		
 	}
 }

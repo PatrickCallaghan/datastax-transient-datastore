@@ -8,41 +8,34 @@
 	<version>0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+
+	<repositories>
+		<repository>
+			<id>datastax-releases-public-local</id>
+			<url>https://repo.datastax.com/datastax-public-releases-local/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>com.datastax.dse</groupId>
 			<artifactId>dse-java-driver-core</artifactId>
-			<version>1.4.0</version>
+			<version>2.2.0-cloud-01</version>
 		</dependency>
 		<dependency>
 			<groupId>com.datastax.dse</groupId>
-			<artifactId>dse-java-driver-mapping</artifactId>
-			<version>1.4.0</version>
+			<artifactId>dse-java-driver-query-builder</artifactId>
+			<version>2.2.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.hdrhistogram</groupId>
-			<artifactId>HdrHistogram</artifactId>
-			<version>2.1.9</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.0.9</version>
-		</dependency>
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-solrj</artifactId>
-			<version>4.6.1</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.2</version>
+			  <groupId>com.datastax.dse</groupId>
+			  <artifactId>dse-java-driver-mapper-runtime</artifactId>
+			  <version>2.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>

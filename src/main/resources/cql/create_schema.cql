@@ -1,4 +1,4 @@
-create keyspace if not exists datastax_global_store WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1} with durable_writes=false;
+create keyspace if not exists datastax_global_store WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
 
 use datastax_global_store; 
 

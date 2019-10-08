@@ -7,12 +7,11 @@ import java.text.SimpleDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.datastax.demo.utils.PropertyHelper;
-import com.datastax.driver.core.BoundStatement;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.PreparedStatement;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Session;
+import com.datastax.dse.driver.api.core.DseSession;
+import com.datastax.oss.driver.api.core.cql.BoundStatement;
+import com.datastax.oss.driver.api.core.cql.PreparedStatement;
+import com.datastax.oss.driver.api.core.cql.ResultSet;
+
 
 /** 
  * Global Cassandra DAO 
@@ -25,11 +24,10 @@ public class GlobalStoreDAO {
 
 	private Logger logger = LoggerFactory.getLogger(GlobalStoreDAO.class);
 
-	private Cluster cluster;
-	private Session session;
+	private DseSession session;
 
 	private static final DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-	private static final String defaultKeyspace = "datastax_global_store";
+	private static final String defaultKeyspace = "testing";
 	private static final String storeObjectTableName = defaultKeyspace + ".object";
 		
 	private static final String getFromStoreCQL = "select key, value from " + storeObjectTableName + " where key = ?";
@@ -40,11 +38,11 @@ public class GlobalStoreDAO {
 	private PreparedStatement getFromStore;
 	private PreparedStatement deleteFromStore;
 	
-	public GlobalStoreDAO() {
-		String contactPoints = PropertyHelper.getProperty("contactPoints", "127.0.0.1");
-		
-		cluster = Cluster.builder().addContactPoints(contactPoints).build();
-		session = cluster.connect();
+	public GlobalStoreDAO() {	
+		session = DseSession.builder().withCloudSecureConnectBundle("/Users/patrickcallaghan/secure-connect-testing.zip")
+		           .withAuthCredentials("Patrick","walrus2005")
+		           .withKeyspace("testing")
+		           .build();
 		
 		this.getFromStore = session.prepare(getFromStoreCQL);
 		this.putInStore = session.prepare(putInStoreCQL);
@@ -56,7 +54,9 @@ public class GlobalStoreDAO {
 		BoundStatement bound = this.getFromStore.bind(key);
 		
 		ResultSet rs = session.execute(bound);
-		if (rs != null && !rs.isExhausted()){
+		
+		
+		if (rs != null && !rs.isFullyFetched()){
 			return new ObjectData(key, rs.one().getString("value"));
 		}else{
 			return new ObjectData();
