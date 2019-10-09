@@ -40,7 +40,7 @@ public class GlobalStoreDAO {
 	
 	public GlobalStoreDAO() {	
 		session = DseSession.builder().withCloudSecureConnectBundle("/Users/patrickcallaghan/secure-connect-testing.zip")
-		           .withAuthCredentials("Patrick","walrus2005")
+		           .withAuthCredentials("Patrick","XxxxxxxxX")
 		           .withKeyspace("testing")
 		           .build();
 		
