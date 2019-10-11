@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.datastax.demo.utils.PropertyHelper;
 import com.datastax.dse.driver.api.core.DseSession;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
 import com.datastax.oss.driver.api.core.cql.PreparedStatement;
@@ -27,22 +28,31 @@ public class GlobalStoreDAO {
 	private DseSession session;
 
 	private static final DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-	private static final String defaultKeyspace = "testing";
-	private static final String storeObjectTableName = defaultKeyspace + ".object";
 		
-	private static final String getFromStoreCQL = "select key, value from " + storeObjectTableName + " where key = ?";
-	private static final String putInStoreCQL = "insert into " + storeObjectTableName + " (key, value) values (?,?)";
-	private static final String deleteFromStoreCQL = "delete from " + storeObjectTableName + " where key = ?";
+	private String getFromStoreCQL;
+	private String putInStoreCQL;
+	private String deleteFromStoreCQL;
 	
 	private PreparedStatement putInStore;
 	private PreparedStatement getFromStore;
 	private PreparedStatement deleteFromStore;
 	
-	public GlobalStoreDAO() {	
-		session = DseSession.builder().withCloudSecureConnectBundle("/Users/patrickcallaghan/secure-connect-testing.zip")
-		           .withAuthCredentials("Patrick","XxxxxxxxX")
-		           .withKeyspace("testing")
-		           .build();
+	public GlobalStoreDAO() {
+		
+		String credsZip = PropertyHelper.getProperty("credsZip", "/Users/patrickcallaghan/secure-connect-testing.zip");
+		String username = PropertyHelper.getProperty("username", "Tester");
+		String password = PropertyHelper.getProperty("password", "password");
+		String keyspace = PropertyHelper.getProperty("keyspace", "testkeyspace");
+		
+		session = DseSession.builder().withCloudSecureConnectBundle(credsZip).withAuthCredentials(username, password)
+				.withKeyspace(keyspace).build();
+	
+		String defaultKeyspace = "testing";
+		String storeObjectTableName = defaultKeyspace + ".object";
+			
+		getFromStoreCQL = "select key, value from " + storeObjectTableName + " where key = ?";
+		putInStoreCQL = "insert into " + storeObjectTableName + " (key, value) values (?,?)";
+		deleteFromStoreCQL = "delete from " + storeObjectTableName + " where key = ?";
 		
 		this.getFromStore = session.prepare(getFromStoreCQL);
 		this.putInStore = session.prepare(putInStoreCQL);
